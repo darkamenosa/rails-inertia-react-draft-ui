@@ -61,6 +61,19 @@ cp -Rf "$SKILL_DIR/assets/app" "$PROJECT_ROOT/"
 cp -Rf "$SKILL_DIR/assets/config" "$PROJECT_ROOT/"
 cp -f "$SKILL_DIR/assets/eslint.config.mjs" "$PROJECT_ROOT/"
 
+# ── Step 5b: Replace project name in template files ──────────────────
+APP_NAME=$(grep '^module ' config/application.rb | head -1 | awk '{print $2}')
+APP_NAME_LOWER=$(echo "$APP_NAME" | sed 's/\([a-z]\)\([A-Z]\)/\1_\2/g' | tr '[:upper:]' '[:lower:]')
+
+if [ -n "$APP_NAME" ] && [ "$APP_NAME" != "Enlead" ]; then
+  echo "==> Replacing 'Enlead' → '$APP_NAME', 'enlead' → '$APP_NAME_LOWER'..."
+  find "$PROJECT_ROOT/app/frontend" "$PROJECT_ROOT/app/views" \
+    -type f \( -name "*.tsx" -o -name "*.ts" -o -name "*.erb" \) \
+    -exec perl -pi -e "s/Enlead/${APP_NAME}/g; s/enlead/${APP_NAME_LOWER}/g" {} +
+else
+  echo "    Project name: $APP_NAME (template default, no replacement needed)"
+fi
+
 # ── Step 6: Auto-fix linting ─────────────────────────────────────────
 echo "==> Auto-fixing lint issues..."
 bin/rubocop --autocorrect 2>/dev/null || true

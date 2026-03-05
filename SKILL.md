@@ -156,4 +156,4 @@ After running the skill, customize:
 - **Footer links**: Column arrays in `components/site-footer.tsx`
 - **SEO defaults**: `DEFAULT_SEO` in `layouts/public-layout.tsx`
 - **Pagy defaults**: `config/initializers/pagy.rb`
-- **App name**: Search for "Enlead" and replace with project name
+- **App name**: Automatically replaced with the project's Rails module name (from `config/application.rb`). If further customization is needed, search for the module name in `app/frontend/` and `app/views/`
