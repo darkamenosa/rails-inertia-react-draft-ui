@@ -21,9 +21,40 @@ echo ""
 
 cd "$PROJECT_ROOT"
 
+# ---------------------------------------------------------------------------
+# Dependency checks
+# ---------------------------------------------------------------------------
+
+for cmd in perl ruby bundle node npm; do
+  command -v "$cmd" >/dev/null 2>&1 || {
+    echo "ERROR: '$cmd' is required but not found." >&2
+    exit 1
+  }
+done
+
+# ---------------------------------------------------------------------------
+# Helper functions
+# ---------------------------------------------------------------------------
+
+underscore() {
+  ruby -e "puts ARGV[0].gsub(/([A-Z]+)([A-Z][a-z])/, '\\1_\\2').gsub(/([a-z\\d])([A-Z])/, '\\1_\\2').downcase" "$1"
+}
+
+add_gem() {
+  local output
+  if output=$(bundle add "$@" --skip-install 2>&1); then
+    echo "    Added: $1"
+  elif echo "$output" | grep -qi "already"; then
+    echo "    Already present: $1"
+  else
+    echo "    ERROR adding $1: $output" >&2
+    return 1
+  fi
+}
+
 # ── Step 1: Install Ruby gems ──────────────────────────────────────────
 echo "==> Installing Ruby gems..."
-bundle add pagy --version "~> 43.2" --skip-install || true
+add_gem pagy --version "~> 43.2"
 bundle install --quiet
 
 # ── Step 2: Install npm dependencies ──────────────────────────────────
@@ -63,15 +94,21 @@ cp -f "$SKILL_DIR/assets/eslint.config.mjs" "$PROJECT_ROOT/"
 
 # ── Step 5b: Replace project name in template files ──────────────────
 APP_NAME=$(grep '^module ' config/application.rb | head -1 | awk '{print $2}')
-APP_NAME_LOWER=$(echo "$APP_NAME" | sed 's/\([a-z]\)\([A-Z]\)/\1_\2/g' | tr '[:upper:]' '[:lower:]')
 
-if [ -n "$APP_NAME" ] && [ "$APP_NAME" != "Enlead" ]; then
+if [ -z "$APP_NAME" ]; then
+  echo "    ERROR: Could not extract module name from config/application.rb" >&2
+  exit 1
+fi
+
+APP_NAME_LOWER=$(underscore "$APP_NAME")
+
+if [ "$APP_NAME" != "Enlead" ]; then
   echo "==> Replacing 'Enlead' → '$APP_NAME', 'enlead' → '$APP_NAME_LOWER'..."
   find "$PROJECT_ROOT/app/frontend" "$PROJECT_ROOT/app/views" \
     -type f \( -name "*.tsx" -o -name "*.ts" -o -name "*.erb" \) \
     -exec perl -pi -e "s/Enlead/${APP_NAME}/g; s/enlead/${APP_NAME_LOWER}/g" {} +
 else
-  echo "    Project name: $APP_NAME (template default, no replacement needed)"
+  echo "    Project name: Enlead (template default, no replacement needed)"
 fi
 
 # ── Step 6: Auto-fix linting ─────────────────────────────────────────

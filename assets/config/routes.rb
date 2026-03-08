@@ -27,8 +27,8 @@ Rails.application.routes.draw do
   end
   get "admin", to: redirect("/admin/dashboard")
 
-  # Mission Control Jobs dashboard
-  mount MissionControl::Jobs::Engine, at: "/admin/jobs"
+  # Mission Control Jobs dashboard (requires mission_control-jobs gem)
+  mount MissionControl::Jobs::Engine, at: "/admin/jobs" if defined?(MissionControl::Jobs::Engine)
 
   # Redirect to localhost from 127.0.0.1
   constraints(host: "127.0.0.1") do
