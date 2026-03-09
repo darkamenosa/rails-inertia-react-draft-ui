@@ -132,13 +132,10 @@ export default function Pricing() {
                 className="mt-6 w-full"
                 variant={plan.popular ? "secondary" : "outline"}
                 size="lg"
-                asChild
+                nativeButton={false}
+                render={<Link href={plan.name === "Enterprise" ? "/contact" : "/register"} />}
               >
-                <Link
-                  href={plan.name === "Enterprise" ? "/contact" : "/register"}
-                >
-                  {plan.cta}
-                </Link>
+                {plan.cta}
               </Button>
               <ul className="mt-8 flex flex-col gap-3">
                 {plan.features.map((feature) => (

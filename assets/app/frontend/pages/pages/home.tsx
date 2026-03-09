@@ -52,14 +52,12 @@ export default function Home() {
               automate, and scale — without the complexity.
             </p>
             <div className="mt-10 flex items-center justify-center gap-4">
-              <Button size="lg" asChild>
-                <Link href="/register">
+              <Button size="lg" nativeButton={false} render={<Link href="/register" />}>
                   Get Started Free
                   <ArrowRight className="size-4" />
-                </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link href="/pricing">View Pricing</Link>
+              <Button variant="outline" size="lg" nativeButton={false} render={<Link href="/pricing" />}>
+                View Pricing
               </Button>
             </div>
           </div>
@@ -129,14 +127,12 @@ export default function Home() {
               faster.
             </p>
             <div className="mt-8 flex items-center justify-center gap-4">
-              <Button size="lg" asChild>
-                <Link href="/register">
+              <Button size="lg" nativeButton={false} render={<Link href="/register" />}>
                   Start Free Trial
                   <ArrowRight className="size-4" />
-                </Link>
               </Button>
-              <Button variant="ghost" size="lg" asChild>
-                <Link href="/contact">Talk to Sales</Link>
+              <Button variant="ghost" size="lg" nativeButton={false} render={<Link href="/contact" />}>
+                Talk to Sales
               </Button>
             </div>
             <p className="mt-4 text-xs text-muted-foreground">

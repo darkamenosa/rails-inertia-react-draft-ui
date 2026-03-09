@@ -59,8 +59,8 @@ export function SiteHeader() {
         {/* Right: Auth + Mobile toggle */}
         <div className="ml-auto flex items-center gap-3">
           {currentUser ? (
-            <Button asChild size="sm">
-              <Link href="/app/dashboard">Dashboard</Link>
+            <Button size="sm" nativeButton={false} render={<Link href="/app/dashboard" />}>
+              Dashboard
             </Button>
           ) : (
             <>
@@ -70,18 +70,16 @@ export function SiteHeader() {
               >
                 Log in
               </Link>
-              <Button asChild size="sm" className="hidden sm:inline-flex">
-                <Link href="/register">Get started</Link>
+              <Button size="sm" className="hidden sm:inline-flex" nativeButton={false} render={<Link href="/register" />}>
+                Get started
               </Button>
             </>
           )}
 
           <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
+            <SheetTrigger render={<Button variant="ghost" size="icon" className="md:hidden" />}>
                 <Menu className="size-5" />
                 <span className="sr-only">Open menu</span>
-              </Button>
             </SheetTrigger>
             <SheetContent
               side="left"
@@ -124,20 +122,17 @@ export function SiteHeader() {
 
               {!currentUser && (
                 <div className="mt-auto flex flex-col gap-2 border-t p-4">
-                  <Button asChild size="lg" className="w-full">
-                    <Link href="/register" onClick={() => setOpen(false)}>
+                  <Button size="lg" className="w-full" nativeButton={false} render={<Link href="/register" onClick={() => setOpen(false)} />}>
                       Get started
-                    </Link>
                   </Button>
                   <Button
                     variant="outline"
-                    asChild
                     size="lg"
                     className="w-full"
+                    nativeButton={false}
+                    render={<Link href="/login" onClick={() => setOpen(false)} />}
                   >
-                    <Link href="/login" onClick={() => setOpen(false)}>
                       Log in
-                    </Link>
                   </Button>
                 </div>
               )}

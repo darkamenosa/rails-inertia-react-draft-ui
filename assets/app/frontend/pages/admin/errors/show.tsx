@@ -37,11 +37,9 @@ export default function AdminErrorPage({ status, title, message }: Props) {
           </div>
 
           <div className="flex gap-3">
-            <Button asChild>
-              <Link href="/admin/dashboard">
+            <Button nativeButton={false} render={<Link href="/admin/dashboard" />}>
                 <Home className="size-4" />
                 Go to Dashboard
-              </Link>
             </Button>
             <Button variant="outline" onClick={() => window.history.back()}>
               <ArrowLeft className="size-4" />

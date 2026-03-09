@@ -51,8 +51,8 @@ export function HeaderSaveBar() {
         Unsaved {resourceName ?? "changes"}
       </span>
       {discardHref ? (
-        <Button variant="ghost" size="sm" asChild>
-          <Link href={discardHref}>Discard</Link>
+        <Button variant="ghost" size="sm" nativeButton={false} render={<Link href={discardHref} />}>
+          Discard
         </Button>
       ) : (
         <Button variant="ghost" size="sm" onClick={onDiscard}>
@@ -82,8 +82,8 @@ export function BottomSaveBar() {
   return (
     <div className="flex items-center justify-end gap-2 border-t pt-4">
       {discardHref ? (
-        <Button variant="outline" asChild>
-          <Link href={discardHref}>Discard</Link>
+        <Button variant="outline" nativeButton={false} render={<Link href={discardHref} />}>
+          Discard
         </Button>
       ) : (
         <Button variant="outline" onClick={onDiscard}>
